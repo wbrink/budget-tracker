@@ -49,15 +49,25 @@ function checkDatabase() {
       .then(() => {
         // if successful, open a transaction on your pending db get store and clear all items
         const store = getStore(DB_STORE_NAME, "readwrite");
-        store.clear();
+        
+        var req = store.clear();
+
+        req.onsuccess = () => {
+          console.log("store cleared");
+        }
+
+        req.onerror = (error) => {
+          console.log(error)
+        }
       });
     }
   }
 }
 
 // returns the store
-function getStore(storeName, mode) {
+function getStore(storeName, mode) {  
   const transaction = db.transaction(storeName, mode);
+  console.log("gettingstore");
   return transaction.objectStore(storeName);
 }
 
