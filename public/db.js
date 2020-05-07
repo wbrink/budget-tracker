@@ -5,7 +5,7 @@ const request = indexedDB.open("budget", 1);
 
 request.onupgradeneeded = function(event) {
   // create obj store pending
-  let db = event.target.result;
+  const db = event.target.result;
   db.createObjectStore("pending", {autoIncrement: true});
 }
 
@@ -32,7 +32,7 @@ function saveRecord(record) {
 
 
 function checkDatabase() {
-  const store = getStore(DB_STORE_NAME, "readwrite");
+  let store = getStore(DB_STORE_NAME, "readwrite");
   const getAll = store.getAll();
 
   getAll.onsuccess = function() {
@@ -48,6 +48,7 @@ function checkDatabase() {
       .then(response => response.json())
       .then(() => {
         // if successful, open a transaction on your pending db get store and clear all items
+        const store = getStore(DB_STORE_NAME, "readwrite");
         store.clear();
       });
     }
